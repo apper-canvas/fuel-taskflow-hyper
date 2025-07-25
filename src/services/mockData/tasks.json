@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1,
+    "id": "task-1",
+    "title": "Review quarterly financial reports",
+    "description": "Analyze Q3 financial performance and prepare summary for board meeting",
+    "priority": "high",
+    "dueDate": "2024-02-15T10:00:00.000Z",
+    "categoryId": "work",
+    "completed": false,
+    "createdAt": "2024-01-20T09:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "id": "task-2",
+    "title": "Plan weekend hiking trip",
+    "description": "Research trails, check weather, and pack hiking gear",
+    "priority": "medium",
+    "dueDate": "2024-02-10T08:00:00.000Z",
+    "categoryId": "personal",
+    "completed": false,
+    "createdAt": "2024-01-18T14:30:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 3,
+    "id": "task-3",
+    "title": "Update project documentation",
+    "description": "Review and update API documentation and user guides",
+    "priority": "medium",
+    "dueDate": "2024-02-12T17:00:00.000Z",
+    "categoryId": "work",
+    "completed": true,
+    "createdAt": "2024-01-15T11:00:00.000Z",
+    "completedAt": "2024-01-22T16:45:00.000Z"
+  },
+  {
+    "Id": 4,
+    "id": "task-4",
+    "title": "Buy groceries for the week",
+    "description": "Get fresh vegetables, fruits, and pantry essentials",
+    "priority": "low",
+    "dueDate": "2024-02-08T18:00:00.000Z",
+    "categoryId": "personal",
+    "completed": true,
+    "createdAt": "2024-01-19T10:15:00.000Z",
+    "completedAt": "2024-01-21T17:30:00.000Z"
+  },
+  {
+    "Id": 5,
+    "id": "task-5",
+    "title": "Schedule team standup meetings",
+    "description": "Coordinate with team members and set up recurring calendar invites",
+    "priority": "high",
+    "dueDate": null,
+    "categoryId": "work",
+    "completed": false,
+    "createdAt": "2024-01-22T08:45:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "id": "task-6",
+    "title": "Learn React best practices",
+    "description": "Study advanced React patterns and performance optimization techniques",
+    "priority": "medium",
+    "dueDate": "2024-02-20T20:00:00.000Z",
+    "categoryId": "learning",
+    "completed": false,
+    "createdAt": "2024-01-16T19:20:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 7,
+    "id": "task-7",
+    "title": "Complete TypeScript course",
+    "description": "Finish the advanced TypeScript modules and practice exercises",
+    "priority": "low",
+    "dueDate": "2024-02-25T23:59:00.000Z",
+    "categoryId": "learning",
+    "completed": false,
+    "createdAt": "2024-01-14T20:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 8,
+    "id": "task-8",
+    "title": "Call mom for birthday",
+    "description": "Remember to wish mom happy birthday and catch up",
+    "priority": "high",
+    "dueDate": "2024-02-09T12:00:00.000Z",
+    "categoryId": "personal",
+    "completed": false,
+    "createdAt": "2024-01-21T15:30:00.000Z",
+    "completedAt": null
+  }
+]
