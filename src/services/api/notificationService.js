@@ -328,7 +328,7 @@ export const notificationService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Id" } }
         ],
@@ -341,7 +341,7 @@ export const notificationService = {
           {
             FieldName: "recipient_c",
             Operator: "EqualTo",
-            Values: [recipientId.toString()]
+            Values: [parseInt(recipientId)]
           }
         ],
         pagingInfo: {

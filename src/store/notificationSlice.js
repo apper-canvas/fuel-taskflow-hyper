@@ -89,9 +89,9 @@ export const notificationSlice = createSlice({
       // Mark as read
       .addCase(markNotificationAsRead.fulfilled, (state, action) => {
         const notificationId = action.payload;
-        const notification = state.notifications.find(n => n.Id === notificationId);
-        if (notification && notification.status === 'unread') {
-          notification.status = 'read';
+const notification = state.notifications.find(n => n.Id === notificationId);
+        if (notification && notification.status_c === 'unread') {
+          notification.status_c = 'read';
           state.unreadCount = Math.max(0, state.unreadCount - 1);
         }
       })

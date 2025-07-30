@@ -67,9 +67,9 @@ const Notifications = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredNotifications = notifications.filter(notification =>
-    notification.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (notification.relatedEntity && notification.relatedEntity.toLowerCase().includes(searchTerm.toLowerCase()))
+const filteredNotifications = notifications.filter(notification =>
+    notification.notificationContent_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (notification.relatedEntity_c && notification.relatedEntity_c.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleNotificationRead = (notificationId) => {
