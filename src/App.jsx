@@ -4,6 +4,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { store } from '@/store';
 import { setUser, clearUser } from '@/store/userSlice';
+import { fetchUnreadCount } from '@/store/notificationSlice';
 import Layout from '@/components/organisms/Layout';
 import Dashboard from '@/components/pages/Dashboard';
 import Jobs from '@/components/pages/Jobs';
@@ -28,7 +29,7 @@ function AppContent() {
   const userState = useSelector((state) => state.user);
   const isAuthenticated = userState?.isAuthenticated || false;
   
-  // Initialize ApperUI once when the app loads
+// Initialize ApperUI once when the app loads
   useEffect(() => {
     const { ApperClient, ApperUI } = window.ApperSDK;
     
@@ -67,6 +68,11 @@ function AppContent() {
           }
           // Store user information in Redux
           dispatch(setUser(JSON.parse(JSON.stringify(user))));
+          
+          // Load notification count for authenticated user
+          if (user.userId) {
+            dispatch(fetchUnreadCount(user.userId));
+          }
         } else {
           // User is not authenticated
           if (!isAuthPage) {
