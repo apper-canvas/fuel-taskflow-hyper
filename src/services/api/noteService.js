@@ -86,7 +86,7 @@ export const noteService = {
           {
             FieldName: "entityId_c",
             Operator: "EqualTo",
-            Values: [parseInt(entityId).toString()]
+            Values: [parseInt(entityId)]
           }
         ],
         orderBy: [
