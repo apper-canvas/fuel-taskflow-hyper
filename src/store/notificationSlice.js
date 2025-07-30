@@ -98,8 +98,8 @@ const notification = state.notifications.find(n => n.Id === notificationId);
       // Mark all as read
       .addCase(markAllNotificationsAsRead.fulfilled, (state) => {
         state.notifications.forEach(notification => {
-          if (notification.status === 'unread') {
-            notification.status = 'read';
+          if (notification.status_c === 'unread') {
+            notification.status_c = 'read';
           }
         });
         state.unreadCount = 0;

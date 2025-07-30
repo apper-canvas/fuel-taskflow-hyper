@@ -3,7 +3,8 @@ import notificationReducer from './notificationSlice'
 import userReducer from './userSlice';
 
 export const store = configureStore({
-  reducer: {
+reducer: {
     user: userReducer,
+    notifications: notificationReducer,
   },
 });
