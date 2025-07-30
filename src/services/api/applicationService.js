@@ -160,8 +160,7 @@ export const applicationService = {
         console.error(`Error fetching applications for job ${jobId}:`, error.message);
         toast.error('Failed to load applications. Please check your connection.');
       }
-      // Return empty array to prevent component crashes
-      return [];
+// Return empty array to prevent component crashes
       return [];
     }
   },
