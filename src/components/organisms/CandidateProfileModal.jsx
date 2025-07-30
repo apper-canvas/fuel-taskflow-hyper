@@ -280,7 +280,7 @@ return (
                 </button>
             </div>
 <form onSubmit={handleSubmit} className="flex flex-col h-full">
-              <div className="overflow-y-auto max-h-[calc(90vh-140px)] p-6 space-y-6">
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {/* Basic Information */}
                 <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h3>
@@ -369,7 +369,7 @@ return (
                 {/* Skills */}
                 <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Skills & Expertise</h3>
-<FormField label="Skills" required error={errors.skills}>
+                  <FormField label="Skills" required error={errors.skills}>
                     {(mode === "add" || mode === "edit") && (
                       <div className="flex gap-2 mb-3">
                         <select
@@ -429,8 +429,8 @@ return (
                   </FormField>
                 </div>
 
-{/* Communication Notes */}
-<div className="border-t border-gray-200 pt-6">
+                {/* Communication Notes */}
+                <div className="border-t border-gray-200 pt-6">
                   <NotesList
                     entityType="candidate"
                     entityId={parseInt(candidate?.Id) || 0}
@@ -490,8 +490,8 @@ return (
                 </div>}
               </div>
               
-              {/* Footer */}
-              <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
+              {/* Footer - Always visible */}
+              <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50 flex-shrink-0">
                 <Button type="button" variant="ghost" onClick={onClose}>
                   {mode === "view" ? "Close" : "Cancel"}
                 </Button>
@@ -505,7 +505,7 @@ return (
                     {isSubmitting ? (mode === "add" ? "Adding..." : "Updating...") : (mode === "add" ? "Add Candidate" : "Update Candidate")}
                   </Button>
                 )}
-              </div>
+</div>
             </form>
         </motion.div>
       </motion.div>
