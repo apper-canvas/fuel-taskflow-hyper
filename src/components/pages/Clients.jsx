@@ -83,7 +83,7 @@ function Clients() {
   }
 
 const filteredClients = clients.filter(client => {
-    const searchLower = (searchTerm || '').toLowerCase()
+    const searchLower = String(searchTerm || '').toLowerCase()
     const matchesSearch = client.companyName.toLowerCase().includes(searchLower) ||
                          client.contactPerson.toLowerCase().includes(searchLower) ||
                          client.email.toLowerCase().includes(searchLower)
