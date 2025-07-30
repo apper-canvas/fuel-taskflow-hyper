@@ -405,11 +405,11 @@ return (
                 </div>
 
 {/* Communication Notes */}
-                <div className="border-t border-gray-200 pt-6">
+<div className="border-t border-gray-200 pt-6">
                   <NotesList
                     entityType="candidate"
-                    entityId={parseInt(candidate.Id) || 0}
-                    entityName={candidate.name}
+                    entityId={parseInt(candidate?.Id) || 0}
+                    entityName={candidate?.name}
                   />
                 </div>
                 {/* Application Status Management */}
