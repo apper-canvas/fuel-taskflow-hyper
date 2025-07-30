@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { applicationService } from "@/services/api/applicationService";
 import ApperIcon from "@/components/ApperIcon";
 import ApplicationStatusPipeline from "@/components/molecules/ApplicationStatusPipeline";
-import NotesList from "@/components/molecules/NotesList";
 import FormField from "@/components/molecules/FormField";
 import InterviewSchedulingModal from "@/components/organisms/InterviewSchedulingModal";
 import Textarea from "@/components/atoms/Textarea";
@@ -429,14 +428,6 @@ return (
                   </FormField>
                 </div>
 
-                {/* Communication Notes */}
-                <div className="border-t border-gray-200 pt-6">
-                  <NotesList
-                    entityType="candidate"
-                    entityId={parseInt(candidate?.Id) || 0}
-                    entityName={candidate?.name}
-                  />
-                </div>
                 {/* Application Status Management */}
                 {(mode === "view" || mode === "edit") && candidate && <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Application Status</h3>
