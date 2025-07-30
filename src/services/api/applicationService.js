@@ -102,6 +102,64 @@ export const applicationService = {
       }
       return null;
     }
+},
+
+  async getByJobId(jobId) {
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "appliedAt_c" } },
+          { field: { Name: "status_c" } },
+          { field: { Name: "notes_c" } },
+          { field: { Name: "interview_c" } },
+          { field: { Name: "jobId_c" } },
+          { field: { Name: "candidateId_c" } }
+        ],
+        where: [
+          {
+            FieldName: "jobId_c",
+            Operator: "EqualTo",
+            Values: [jobId.toString()]
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords('application_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      return response.data.map(application => ({
+        Id: application.Id,
+        jobId: application.jobId_c?.Id || application.jobId_c,
+        candidateId: application.candidateId_c?.Id || application.candidateId_c,
+        appliedAt: application.appliedAt_c || new Date().toISOString(),
+        status: application.status_c || 'applied',
+        notes: application.notes_c || '',
+        interview: application.interview_c || null
+      }));
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error(`Error fetching applications for job ${jobId}:`, error?.response?.data?.message);
+      } else {
+        console.error(`Error fetching applications for job ${jobId}:`, error.message);
+      }
+      return [];
+    }
   },
 
   async create(applicationData) {
