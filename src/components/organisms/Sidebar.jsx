@@ -55,15 +55,29 @@ const navigation = [
         </ul>
       </nav>
 
-      <div className="mt-auto px-6 py-6 border-t border-white/10">
-        <div className="flex items-center space-x-3 p-3 rounded-xl bg-white/10 backdrop-blur-sm">
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-            <ApperIcon name="User" size={16} className="text-white" />
+<div className="mt-auto px-6 py-6 border-t border-white/10">
+        <div className="flex items-center justify-between space-x-3 p-3 rounded-xl bg-white/10 backdrop-blur-sm">
+          <div className="flex items-center space-x-3 flex-1 min-w-0">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <ApperIcon name="User" size={16} className="text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">Admin User</p>
+              <p className="text-xs text-white/70 truncate">admin@talentbridge.com</p>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">Admin User</p>
-            <p className="text-xs text-white/70 truncate">admin@talentbridge.com</p>
-          </div>
+          <button
+            onClick={() => {
+              const { ApperUI } = window.ApperSDK;
+              ApperUI.logout().then(() => {
+                window.location.href = '/login';
+              });
+            }}
+            className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            title="Logout"
+          >
+            <ApperIcon name="LogOut" size={16} />
+          </button>
         </div>
       </div>
     </>
@@ -142,15 +156,29 @@ const navigation = [
               </ul>
             </nav>
 
-            <div className="px-6 py-6 border-t border-white/10">
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-white/10 backdrop-blur-sm">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                  <ApperIcon name="User" size={16} className="text-white" />
+<div className="px-6 py-6 border-t border-white/10">
+              <div className="flex items-center justify-between space-x-3 p-3 rounded-xl bg-white/10 backdrop-blur-sm">
+                <div className="flex items-center space-x-3 flex-1 min-w-0">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                    <ApperIcon name="User" size={16} className="text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">Admin User</p>
+                    <p className="text-xs text-white/70 truncate">admin@talentbridge.com</p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">Admin User</p>
-                  <p className="text-xs text-white/70 truncate">admin@talentbridge.com</p>
-                </div>
+                <button
+                  onClick={() => {
+                    const { ApperUI } = window.ApperSDK;
+                    ApperUI.logout().then(() => {
+                      window.location.href = '/login';
+                    });
+                  }}
+                  className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  title="Logout"
+                >
+                  <ApperIcon name="LogOut" size={16} />
+                </button>
               </div>
             </div>
           </div>
