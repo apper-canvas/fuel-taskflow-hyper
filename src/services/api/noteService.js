@@ -237,7 +237,21 @@ export const noteService = {
       } else {
         console.error("Error deleting note:", error.message);
       }
+return false;
+    }
+  },
+
+  canEdit(note) {
+    if (!note || !note.createdAt) {
       return false;
     }
+    
+    // Notes can only be edited within 24 hours of creation
+    const createdAt = new Date(note.createdAt);
+    const now = new Date();
+    const timeDiff = now.getTime() - createdAt.getTime();
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    
+    return timeDiff <= twentyFourHours;
   }
 };
