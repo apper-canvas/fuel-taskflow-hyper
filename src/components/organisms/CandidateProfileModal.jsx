@@ -261,10 +261,10 @@ return (
             exit={{
                 scale: 0.95,
                 opacity: 0
-            }}
-            className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
+}}
+            className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
             onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-6 border-b">
+            <div className="flex items-center justify-between p-6 border-b flex-shrink-0">
                 <div>
                     <h2 className="text-2xl font-bold font-display text-gray-900">
 {mode === "add" ? "Add New Candidate" : mode === "edit" ? "Edit Candidate" : "Candidate Profile"}
@@ -279,7 +279,7 @@ return (
                     <ApperIcon name="X" size={24} />
                 </button>
             </div>
-<form onSubmit={handleSubmit} className="flex flex-col h-full">
+<form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {/* Basic Information */}
                 <div>
