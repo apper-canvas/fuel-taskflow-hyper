@@ -26,9 +26,9 @@ const CandidateCard = ({ candidate, className, onView, appliedJobs = [], ...prop
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
-<div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-lg">
               <span className="text-white font-semibold text-lg">
-                {candidate.name?.charAt(0)?.toUpperCase() || '?'}
+                {candidate.name.charAt(0).toUpperCase()}
               </span>
             </div>
             <div>
@@ -97,13 +97,6 @@ const CandidateCard = ({ candidate, className, onView, appliedJobs = [], ...prop
               title="Contact Candidate"
             >
               <ApperIcon name="Phone" size={14} />
-            </button>
-            <button
-              onClick={() => props.onDelete?.(candidate)}
-              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-              title="Delete Candidate"
-            >
-              <ApperIcon name="Trash2" size={14} />
             </button>
           </div>
         </div>

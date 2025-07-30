@@ -15,7 +15,6 @@ const CandidateProfileModal = ({
   isOpen, 
   onClose, 
   onSave, 
-  onDelete,
   candidate = null, 
   mode = "add", // "add", "view", or "edit"
   candidateApplications = [],
@@ -150,9 +149,7 @@ const handleSubmit = async (e) => {
     } finally {
       setIsSubmitting(false);
     }
-};
-
-  const [isDeleting, setIsDeleting] = useState(false);
+  };
 
   const handleInterviewSchedule = (applicationId) => {
     setSelectedApplicationId(applicationId);
@@ -272,10 +269,10 @@ return (
                     onClick={onClose}
                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                     <ApperIcon name="X" size={24} />
-</button>
+                </button>
             </div>
-<form id="candidate-form" onSubmit={handleSubmit}>
-              <div className="overflow-y-auto max-h-[calc(90vh-280px)] p-6 space-y-6">
+<form onSubmit={handleSubmit} className="flex flex-col h-full">
+              <div className="overflow-y-auto max-h-[calc(90vh-140px)] p-6 space-y-6">
                 {/* Basic Information */}
                 <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Basic Information</h3>
@@ -408,114 +405,69 @@ return (
                 </div>
 
                 {/* Communication Notes */}
-                {candidate && candidate.Id && (
-                  <div className="border-t border-gray-200 pt-6">
-                    <NotesList
-                      entityType="candidate"
-                      entityId={candidate.Id}
-                      entityName={candidate.name}
-                    />
-</div>
-                )}
-              </div>
-            </form>
-
-            {/* Application Status Management */}
-            {(mode === "view" || mode === "edit") && candidate && (
-              <div className="px-6 pb-6">
-                <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Application Status</h3>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">Current Status:</span>
-                    <Badge
-                      variant={candidate.status === "new" ? "primary" : candidate.status === "interviewed" ? "secondary" : candidate.status === "hired" ? "active" : "inactive"}>
-                      {candidate.status}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">Availability:</span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getAvailabilityDisplay(formData.availability).color}`}>
-                      {getAvailabilityDisplay(formData.availability).label}
-                    </span>
-                  </div>
+                <div className="border-t border-gray-200 pt-6">
+                  <NotesList
+                    entityType="candidate"
+                    entityId={candidate.Id}
+                    entityName={candidate.name}
+                  />
                 </div>
+
                 {/* Application Status Management */}
-                {candidateApplications && candidateApplications.length > 0 && (
-                  <div className="space-y-4">
+                {(mode === "view" || mode === "edit") && candidate && <div>
+                  <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Application Status</h3>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">Current Status:</span>
+                      <Badge
+                        variant={candidate.status === "new" ? "primary" : candidate.status === "interviewed" ? "secondary" : candidate.status === "hired" ? "active" : "inactive"}>
+                        {candidate.status}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">Availability:</span>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getAvailabilityDisplay(formData.availability).color}`}>
+                        {getAvailabilityDisplay(formData.availability).label}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Application Status Management */}
+                  {candidateApplications && candidateApplications.length > 0 && <div className="space-y-4">
                     <h4 className="text-base font-medium text-gray-900">Applications</h4>
                     {candidateApplications.map(
-                      application => (
-                        <div key={application.Id} className="border border-gray-200 rounded-lg p-4">
-                          <ApplicationStatusPipeline
-                            currentStatus={application.status}
-                            onStatusChange={onStatusChange}
-                            applicationId={application.Id}
-                            showUpdateDropdown={true}
-                            onInterviewSchedule={handleInterviewSchedule} />
-                          <div className="mt-3 pt-3 border-t border-gray-100">
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">Applied to:</span> {application.jobTitle || "Unknown Position"}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-1">Applied on {new Date(application.appliedAt).toLocaleDateString()}</p>
-                            {application.interview && (
-                              <div className="mt-2 p-2 bg-purple-50 rounded-lg">
-                                <p className="text-sm font-medium text-purple-800">Interview Scheduled</p>
-                                <p className="text-sm text-purple-600">
-                                  {new Date(application.interview.date).toLocaleDateString()} at {application.interview.time}
-                                </p>
-                                <p className="text-sm text-purple-600">
-                                  {application.interview.type} with {application.interview.interviewer}
-                                </p>
-                              </div>
-                            )}
-                          </div>
+                      application => <div key={application.Id} className="border border-gray-200 rounded-lg p-4">
+                        <ApplicationStatusPipeline
+                          currentStatus={application.status}
+                          onStatusChange={onStatusChange}
+                          applicationId={application.Id}
+                          showUpdateDropdown={true}
+                          onInterviewSchedule={handleInterviewSchedule} />
+                        <div className="mt-3 pt-3 border-t border-gray-100">
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Applied to:</span> {application.jobTitle || "Unknown Position"}
+                          </p>
+                          <p className="text-sm text-gray-500 mt-1">Applied on {new Date(application.appliedAt).toLocaleDateString()}</p>
+                          {application.interview && (
+                            <div className="mt-2 p-2 bg-purple-50 rounded-lg">
+                              <p className="text-sm font-medium text-purple-800">Interview Scheduled</p>
+                              <p className="text-sm text-purple-600">
+                                {new Date(application.interview.date).toLocaleDateString()} at {application.interview.time}
+                              </p>
+                              <p className="text-sm text-purple-600">
+                                {application.interview.type} with {application.interview.interviewer}
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      )
+                      </div>
                     )}
-                  </div>
-                )}
+                  </div>}
+                </div>}
               </div>
-            )}
-
-            {/* Footer */}
-            <div className="flex items-center justify-between p-6 border-t bg-gray-50">
-              <div>
-                {(mode === "view" || mode === "edit") && candidate && onDelete && (
-                  <Button 
-                    type="button" 
-                    variant="ghost" 
-onClick={async () => {
-                      // Validate candidate and ID before deletion
-                      if (!candidate || !candidate.Id) {
-                        toast.error('Invalid candidate data - cannot delete');
-                        return;
-                      }
-
-                      if (confirm('Are you sure you want to delete this candidate? This action cannot be undone.')) {
-                        setIsDeleting(true);
-                        try {
-                          // Pass the raw ID - the service handles parsing and validation
-                          await onDelete(candidate.Id);
-                          toast.success('Candidate deleted successfully!');
-                          onClose();
-                        } catch (error) {
-                          console.error('Delete error:', error);
-                          toast.error(error.message || 'Failed to delete candidate');
-                        } finally {
-                          setIsDeleting(false);
-                        }
-                      }
-                    }}
-                    disabled={isDeleting || isSubmitting}
-                    className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-                  >
-                    {isDeleting && <ApperIcon name="Loader2" size={16} className="animate-spin" />}
-                    {isDeleting ? "Deleting..." : "Delete"}
-                  </Button>
-                )}
-              </div>
-              <div className="flex items-center gap-3">
+              
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
                 <Button type="button" variant="ghost" onClick={onClose}>
                   {mode === "view" ? "Close" : "Cancel"}
                 </Button>
@@ -523,18 +475,17 @@ onClick={async () => {
                   <Button
                     variant="primary"
                     type="submit"
-                    form="candidate-form"
-                    disabled={isSubmitting || isDeleting}
+                    disabled={isSubmitting}
                     className="flex items-center gap-2">
                     {isSubmitting && <ApperIcon name="Loader2" size={16} className="animate-spin" />}
                     {isSubmitting ? (mode === "add" ? "Adding..." : "Updating...") : (mode === "add" ? "Add Candidate" : "Update Candidate")}
                   </Button>
                 )}
               </div>
-            </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+            </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
     {/* Interview Scheduling Modal */}
     <AnimatePresence>
       {showInterviewModal && (

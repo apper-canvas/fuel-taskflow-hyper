@@ -1,391 +1,238 @@
-import { toast } from 'react-toastify';
+import applicationsData from "@/services/mockData/applications.json";
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const applications = [...applicationsData];
+let nextId = Math.max(...applications.map(app => app.Id), 0) + 1;
 
 export const applicationService = {
   async getAll() {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      const params = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "appliedAt" } },
-          { field: { Name: "status" } },
-          { field: { Name: "notes" } },
-          { field: { Name: "interview" } },
-          { field: { Name: "jobId" } },
-          { field: { Name: "candidateId" } }
-        ],
-        orderBy: [
-          { fieldName: "appliedAt", sorttype: "DESC" }
-        ],
-        pagingInfo: { limit: 100, offset: 0 }
-      };
-
-      const response = await apperClient.fetchRecords('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return [];
-      }
-
-      return response.data || [];
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error fetching applications:", error.response.data.message);
-      } else {
-        console.error(error.message);
-      }
-      return [];
-    }
+    await delay(300);
+    return [...applications];
   },
 
   async getById(id) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      const params = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "appliedAt" } },
-          { field: { Name: "status" } },
-          { field: { Name: "notes" } },
-          { field: { Name: "interview" } },
-          { field: { Name: "jobId" } },
-          { field: { Name: "candidateId" } }
-        ]
-      };
-
-      const response = await apperClient.getRecordById('application', id, params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return null;
-      }
-
-      return response.data;
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error(`Error fetching application with ID ${id}:`, error.response.data.message);
-      } else {
-        console.error(error.message);
-      }
-      return null;
+    await delay(200);
+    if (typeof id !== 'number') {
+      throw new Error('Application ID must be a number');
     }
-  },
-
-  async create(applicationData) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      // Only include Updateable fields for creation
-      const params = {
-        records: [{
-          Name: applicationData.Name || `Application ${Date.now()}`,
-          appliedAt: applicationData.appliedAt || new Date().toISOString(),
-          status: applicationData.status || 'applied',
-          notes: applicationData.notes || '',
-          interview: applicationData.interview || '',
-          jobId: parseInt(applicationData.jobId),
-          candidateId: parseInt(applicationData.candidateId)
-        }]
-      };
-
-      const response = await apperClient.createRecord('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return null;
-      }
-
-      if (response.results) {
-        const successfulRecords = response.results.filter(result => result.success);
-        const failedRecords = response.results.filter(result => !result.success);
-        
-        if (failedRecords.length > 0) {
-          console.error(`Failed to create application ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
-          
-          failedRecords.forEach(record => {
-            record.errors?.forEach(error => {
-              toast.error(`${error.fieldLabel}: ${error.message}`);
-            });
-            if (record.message) toast.error(record.message);
-          });
-        }
-        
-        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
-      }
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error creating application:", error.response.data.message);
-      } else {
-        console.error(error.message);
-      }
-      return null;
+    
+    const application = applications.find(app => app.Id === id);
+    if (!application) {
+      throw new Error('Application not found');
     }
-  },
-
-  async update(id, applicationData) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      // Only include Updateable fields for update
-      const updateFields = {};
-      if (applicationData.Name !== undefined) updateFields.Name = applicationData.Name;
-      if (applicationData.appliedAt !== undefined) updateFields.appliedAt = applicationData.appliedAt;
-      if (applicationData.status !== undefined) updateFields.status = applicationData.status;
-      if (applicationData.notes !== undefined) updateFields.notes = applicationData.notes;
-      if (applicationData.interview !== undefined) updateFields.interview = applicationData.interview;
-      if (applicationData.jobId !== undefined) updateFields.jobId = parseInt(applicationData.jobId);
-      if (applicationData.candidateId !== undefined) updateFields.candidateId = parseInt(applicationData.candidateId);
-
-      const params = {
-        records: [{
-          Id: parseInt(id),
-          ...updateFields
-        }]
-      };
-
-      const response = await apperClient.updateRecord('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return null;
-      }
-
-      if (response.results) {
-        const successfulUpdates = response.results.filter(result => result.success);
-        const failedUpdates = response.results.filter(result => !result.success);
-        
-        if (failedUpdates.length > 0) {
-          console.error(`Failed to update application ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
-          
-          failedUpdates.forEach(record => {
-            record.errors?.forEach(error => {
-              toast.error(`${error.fieldLabel}: ${error.message}`);
-            });
-            if (record.message) toast.error(record.message);
-          });
-        }
-        
-        return successfulUpdates.length > 0 ? successfulUpdates[0].data : null;
-      }
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error updating application:", error.response.data.message);
-      } else {
-        console.error(error.message);
-      }
-      return null;
-    }
-  },
-
-  async updateStatus(applicationId, newStatus) {
-    return await this.update(applicationId, { status: newStatus });
-  },
-
-  async delete(id) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      const params = {
-        RecordIds: [parseInt(id)]
-      };
-
-      const response = await apperClient.deleteRecord('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return false;
-      }
-
-      if (response.results) {
-        const successfulDeletions = response.results.filter(result => result.success);
-        const failedDeletions = response.results.filter(result => !result.success);
-        
-        if (failedDeletions.length > 0) {
-          console.error(`Failed to delete application ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
-          
-          failedDeletions.forEach(record => {
-            if (record.message) toast.error(record.message);
-          });
-        }
-        
-        return successfulDeletions.length > 0;
-      }
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error deleting application:", error.response.data.message);
-      } else {
-        console.error(error.message);
-      }
-      return false;
-    }
+    
+    return { ...application };
   },
 
   async getByJobId(jobId) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      const params = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "appliedAt" } },
-          { field: { Name: "status" } },
-          { field: { Name: "notes" } },
-          { field: { Name: "interview" } },
-          { field: { Name: "jobId" } },
-          { field: { Name: "candidateId" } }
-        ],
-        where: [
-          {
-            FieldName: "jobId",
-            Operator: "EqualTo",
-            Values: [parseInt(jobId)]
-          }
-        ],
-        orderBy: [
-          { fieldName: "appliedAt", sorttype: "DESC" }
-        ]
-      };
-
-      const response = await apperClient.fetchRecords('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        return [];
-      }
-
-      return response.data || [];
-    } catch (error) {
-      console.error("Error fetching applications by job ID:", error.message);
-      return [];
+    await delay(200);
+    if (typeof jobId !== 'number') {
+      throw new Error('Job ID must be a number');
     }
+    
+    return applications
+      .filter(app => app.jobId === jobId)
+      .map(app => ({ ...app }));
   },
 
   async getByCandidateId(candidateId) {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
-      const params = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "appliedAt" } },
-          { field: { Name: "status" } },
-          { field: { Name: "notes" } },
-          { field: { Name: "interview" } },
-          { field: { Name: "jobId" } },
-          { field: { Name: "candidateId" } }
-        ],
-        where: [
-          {
-            FieldName: "candidateId",
-            Operator: "EqualTo",
-            Values: [parseInt(candidateId)]
-          }
-        ],
-        orderBy: [
-          { fieldName: "appliedAt", sorttype: "DESC" }
-        ]
-      };
-
-      const response = await apperClient.fetchRecords('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        return [];
-      }
-
-      return response.data || [];
-    } catch (error) {
-      console.error("Error fetching applications by candidate ID:", error.message);
-      return [];
+    await delay(200);
+    if (typeof candidateId !== 'number') {
+      throw new Error('Candidate ID must be a number');
     }
+    
+    return applications
+      .filter(app => app.candidateId === candidateId)
+      .map(app => ({ ...app }));
   },
 
+  async create(applicationData) {
+    await delay(500);
+    
+    // Validate required fields
+    if (!applicationData.jobId || !applicationData.candidateId) {
+      throw new Error('Job ID and Candidate ID are required');
+    }
+
+    // Check if application already exists
+    const existingApp = applications.find(
+      app => app.jobId === applicationData.jobId && app.candidateId === applicationData.candidateId
+    );
+    
+    if (existingApp) {
+      throw new Error('Candidate has already been applied to this job');
+    }
+
+const newApplication = {
+      Id: nextId++,
+      jobId: applicationData.jobId,
+      candidateId: applicationData.candidateId,
+      appliedAt: new Date().toISOString(),
+status: 'applied',
+      notes: applicationData.notes || '',
+      notesCount: 0
+    };
+
+    applications.push(newApplication);
+    return { ...newApplication };
+  },
+
+  // Update application status
+async updateStatus(applicationId, newStatus) {
+    await delay(300);
+    
+    // Validate application ID
+    if (!applicationId || typeof applicationId !== 'number') {
+      throw new Error('Invalid application ID');
+    }
+    
+    const validStatuses = ['applied', 'screening', 'interview_scheduled', 'final_review', 'hired', 'rejected'];
+    if (!validStatuses.includes(newStatus)) {
+      throw new Error(`Invalid status: ${newStatus}. Valid statuses are: ${validStatuses.join(', ')}`);
+    }
+
+    const applicationIndex = applications.findIndex(app => app.Id === applicationId);
+    if (applicationIndex === -1) {
+      throw new Error(`Application with ID ${applicationId} not found`);
+    }
+
+    // Update the application status and timestamp
+    applications[applicationIndex].status = newStatus;
+    applications[applicationIndex].updatedAt = new Date().toISOString();
+    
+    return { ...applications[applicationIndex] };
+  },
+
+  async update(id, applicationData) {
+    await delay(400);
+    
+    if (typeof id !== 'number') {
+      throw new Error('Application ID must be a number');
+    }
+
+    const index = applications.findIndex(app => app.Id === id);
+    if (index === -1) {
+      throw new Error('Application not found');
+    }
+
+    const updatedApplication = {
+      ...applications[index],
+      ...applicationData,
+      Id: applications[index].Id // Preserve original ID
+    };
+
+    applications[index] = updatedApplication;
+    return { ...updatedApplication };
+  },
+
+  async delete(id) {
+    await delay(300);
+    
+    if (typeof id !== 'number') {
+      throw new Error('Application ID must be a number');
+    }
+
+    const index = applications.findIndex(app => app.Id === id);
+    if (index === -1) {
+      throw new Error('Application not found');
+    }
+
+    const deletedApplication = { ...applications[index] };
+    applications.splice(index, 1);
+    return deletedApplication;
+  },
+
+async checkApplication(jobId, candidateId) {
+    await delay(100);
+    
+    return applications.find(
+      app => app.jobId === jobId && app.candidateId === candidateId
+    ) || null;
+  },
+
+  // Schedule interview for an application
+  async scheduleInterview(applicationId, interviewData) {
+    await delay(400);
+    
+    if (typeof applicationId !== 'number') {
+      throw new Error('Application ID must be a number');
+    }
+
+    const applicationIndex = applications.findIndex(app => app.Id === applicationId);
+    if (applicationIndex === -1) {
+      throw new Error('Application not found');
+    }
+
+    // Validate interview data
+    const { date, time, interviewer, type, notes } = interviewData;
+    if (!date || !time || !interviewer || !type) {
+      throw new Error('Date, time, interviewer, and type are required');
+    }
+
+    const validTypes = ['Phone', 'Video', 'In-person'];
+    if (!validTypes.includes(type)) {
+      throw new Error('Invalid interview type');
+    }
+
+    applications[applicationIndex].interview = {
+      date,
+      time,
+      interviewer,
+      type,
+      notes: notes || ''
+    };
+
+    // Ensure status is interview_scheduled
+    applications[applicationIndex].status = 'interview_scheduled';
+
+    return { ...applications[applicationIndex] };
+  },
+
+  // Update interview details
+  async updateInterview(applicationId, interviewData) {
+    await delay(400);
+    
+    if (typeof applicationId !== 'number') {
+      throw new Error('Application ID must be a number');
+    }
+
+    const applicationIndex = applications.findIndex(app => app.Id === applicationId);
+    if (applicationIndex === -1) {
+      throw new Error('Application not found');
+    }
+
+    if (!applications[applicationIndex].interview) {
+      throw new Error('No interview scheduled for this application');
+    }
+
+    applications[applicationIndex].interview = {
+      ...applications[applicationIndex].interview,
+      ...interviewData
+    };
+
+    return { ...applications[applicationIndex] };
+  },
+
+  // Get upcoming interviews
   async getUpcomingInterviews() {
-    try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+    await delay(200);
+    
+    const now = new Date();
+    const upcomingInterviews = applications
+      .filter(app => app.interview && app.status === 'interview_scheduled')
+      .map(app => ({
+        ...app,
+        interviewDateTime: new Date(`${app.interview.date}T${app.interview.time}`)
+      }))
+      .filter(app => app.interviewDateTime >= now)
+      .sort((a, b) => a.interviewDateTime - b.interviewDateTime);
 
-      const params = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "appliedAt" } },
-          { field: { Name: "status" } },
-          { field: { Name: "notes" } },
-          { field: { Name: "interview" } },
-          { field: { Name: "jobId" } },
-          { field: { Name: "candidateId" } }
-        ],
-        where: [
-          {
-            FieldName: "status",
-            Operator: "EqualTo",
-            Values: ["interview_scheduled"]
-          }
-        ],
-        orderBy: [
-          { fieldName: "appliedAt", sorttype: "ASC" }
-        ]
-      };
-
-      const response = await apperClient.fetchRecords('application', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        return [];
-      }
-
-      return response.data || [];
-    } catch (error) {
-      console.error("Error fetching upcoming interviews:", error.message);
-      return [];
-    }
-  },
-
-  async checkApplication(jobId, candidateId) {
-    try {
-      const applications = await this.getByJobId(jobId);
-      return applications.find(app => app.candidateId === parseInt(candidateId)) || null;
-    } catch (error) {
-      console.error("Error checking application:", error.message);
-      return null;
-    }
+    return upcomingInterviews.map(app => {
+      const { interviewDateTime, ...rest } = app;
+      return rest;
+    });
   }
 };

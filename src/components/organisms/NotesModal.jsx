@@ -141,9 +141,9 @@ const handleSubmit = async (e) => {
                 >
                   <ApperIcon name="X" size={20} />
                 </button>
-</div>
+              </div>
 
-              <div className="flex flex-col">
+              <form onSubmit={handleSubmit} className="flex flex-col">
                 <div className="p-6 space-y-6">
                   <FormField label="Category" required>
                     <div className="grid grid-cols-2 gap-3">
@@ -227,9 +227,9 @@ const handleSubmit = async (e) => {
                     disabled={isSubmitting}
                   >
                     Cancel
-</Button>
+                  </Button>
                 </div>
-              </div>
+              </form>
             </motion.div>
           </div>
         </div>

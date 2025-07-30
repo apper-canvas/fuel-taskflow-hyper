@@ -23,8 +23,8 @@ activeJobs: 0,
   const [upcomingInterviews, setUpcomingInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-const loadDashboardData = async () => {
-    try {
+  const loadDashboardData = async () => {
+try {
       setLoading(true);
       setError("");
       
@@ -34,14 +34,9 @@ const loadDashboardData = async () => {
         applicationService.getUpcomingInterviews()
       ]);
 
-      // Handle empty data gracefully
-      const jobsArray = jobs || [];
-      const candidatesArray = candidates || [];
-      const interviewsArray = interviews || [];
-
       // Calculate metrics
-      const activeJobs = jobsArray.filter(job => job.status === "active").length;
-      const newCandidates = candidatesArray.filter(candidate => {
+      const activeJobs = jobs.filter(job => job.status === "active").length;
+      const newCandidates = candidates.filter(candidate => {
         const appliedDate = new Date(candidate.appliedAt);
         const weekAgo = new Date();
         weekAgo.setDate(weekAgo.getDate() - 7);
@@ -49,29 +44,23 @@ const loadDashboardData = async () => {
       }).length;
 
       setMetrics({
-        totalJobs: jobsArray.length,
-        totalCandidates: candidatesArray.length,
+        totalJobs: jobs.length,
+        totalCandidates: candidates.length,
         activeJobs,
         newCandidates
       });
 
       // Get recent data
-      setRecentJobs(jobsArray.slice(0, 5));
-      setRecentCandidates(candidatesArray.slice(0, 5));
-      setUpcomingInterviews(interviewsArray.slice(0, 5));
+      setRecentJobs(jobs.slice(0, 5));
+      setRecentCandidates(candidates.slice(0, 5));
+      setUpcomingInterviews(interviews.slice(0, 5));
 
     } catch (err) {
-      console.error("Error loading dashboard data:", err.message);
       setError(err.message || "Failed to load dashboard data");
-      // Set empty arrays on error
-      setRecentJobs([]);
-      setRecentCandidates([]);
-      setUpcomingInterviews([]);
     } finally {
       setLoading(false);
     }
   };
-  
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -171,10 +160,10 @@ const loadDashboardData = async () => {
                         key={candidate.Id}
                         className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-200">
                         <div className="flex items-center space-x-3">
-<div
+                            <div
                                 className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-lg">
                                 <span className="text-white font-semibold text-sm">
-                                    {(candidate.name?.charAt(0) || '?').toUpperCase()}
+                                    {candidate.name.charAt(0).toUpperCase()}
                                 </span>
                             </div>
                             <div className="flex-1">

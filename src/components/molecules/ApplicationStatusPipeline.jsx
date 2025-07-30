@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
 import { cn } from "@/utils/cn";
 
@@ -66,24 +65,18 @@ const ApplicationStatusPipeline = ({
 const currentStageIndex = statusStages.findIndex(stage => stage.key === currentStatus);
   
 const handleStatusUpdate = async (newStatus) => {
-    // Validate that we have the required props and the status is actually changing
-    if (!onStatusChange || !applicationId || !newStatus || newStatus === currentStatus) {
-      return;
+    if (onStatusChange && applicationId && newStatus !== currentStatus) {
+      setIsUpdating(true);
+      try {
+        await onStatusChange(applicationId, newStatus);
+      } catch (error) {
+        console.error('Failed to update status:', error);
+        // Reset the select value on error by triggering a re-render
+        setTimeout(() => setIsUpdating(false), 100);
+        return;
+      }
+      setIsUpdating(false);
     }
-    
-    setIsUpdating(true);
-    try {
-      await onStatusChange(applicationId, newStatus);
-      // Show success notification
-      toast.success(`Application status updated to ${statusStages.find(s => s.key === newStatus)?.label || newStatus}`);
-    } catch (error) {
-      console.error('Failed to update status:', error);
-      toast.error(error.message || 'Failed to update application status');
-      // Reset the select value on error by triggering a re-render
-      setTimeout(() => setIsUpdating(false), 100);
-      return;
-    }
-    setIsUpdating(false);
   };
 
   return (

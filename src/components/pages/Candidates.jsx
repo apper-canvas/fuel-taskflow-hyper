@@ -38,9 +38,9 @@ const [modalMode, setModalMode] = useState('add')
     loadCandidates()
   }, [])
 
-async function loadCandidates() {
+  async function loadCandidates() {
     setLoading(true)
-    setError(null)
+setError(null)
     
     try {
       const [candidatesData, jobsData, applicationsData] = await Promise.all([
@@ -49,21 +49,16 @@ async function loadCandidates() {
         applicationService.getAll()
       ])
       
-      // Handle empty data gracefully
-      setCandidates(candidatesData || [])
-      setJobs(jobsData || [])
-      setApplications(applicationsData || [])
+      setCandidates(candidatesData)
+      setJobs(jobsData)
+      setApplications(applicationsData)
     } catch (err) {
       setError('Failed to load candidates. Please try again.')
-      console.error('Failed to load candidates:', err.message)
-      // Set empty arrays on error
-      setCandidates([])
-      setJobs([])
-      setApplications([])
+      console.error('Failed to load candidates:', err)
     } finally {
       setLoading(false)
     }
-  }
+}
 
 function handleViewCandidate(candidate) {
     setSelectedCandidate(candidate)
@@ -82,31 +77,18 @@ function handleViewCandidate(candidate) {
     toast.info(`Contacting ${candidate.name}...`)
     // In a real app, this might open email client or phone dialer
   }
-async function handleAddCandidate(candidateData) {
+
+  async function handleAddCandidate(candidateData) {
     try {
       const newCandidate = await candidateService.create(candidateData)
-      if (newCandidate) {
-        setCandidates(prev => [newCandidate, ...prev])
-        toast.success('Candidate added successfully!')
-      }
+      setCandidates(prev => [newCandidate, ...prev])
+      toast.success('Candidate added successfully!')
     } catch (error) {
       toast.error(error.message || 'Failed to add candidate')
       throw error
-    }
+}
   }
 
-  async function handleDeleteCandidate(candidateId) {
-    try {
-      const success = await candidateService.delete(candidateId)
-      if (success) {
-        setCandidates(prev => prev.filter(candidate => candidate.Id !== candidateId))
-        toast.success('Candidate deleted successfully!')
-      }
-    } catch (error) {
-      toast.error(error.message || 'Failed to delete candidate')
-      throw error
-    }
-  }
   async function handleStatusChange(applicationId, newStatus) {
     try {
       await applicationService.updateStatus(applicationId, newStatus);
@@ -143,20 +125,18 @@ async function handleAddCandidate(candidateData) {
     return 'new';
   }
 
-async function handleApplicationUpdate(applicationId, updates) {
+  async function handleApplicationUpdate(applicationId, updates) {
     try {
-      const updated = await applicationService.update(applicationId, updates)
+      await applicationService.update(applicationId, updates)
       
-      if (updated) {
-        // Reload applications to get updated data
-        const updatedApplications = await applicationService.getAll()
-        setApplications(updatedApplications || [])
-        
-        toast.success('Application updated successfully!')
-      }
+      // Reload applications to get updated data
+      const updatedApplications = await applicationService.getAll()
+      setApplications(updatedApplications)
+      
+      toast.success('Application updated successfully!')
     } catch (error) {
       toast.error(error.message || 'Failed to update application')
-      console.error('Failed to update application:', error.message)
+      console.error('Failed to update application:', error)
     }
   }
 
@@ -296,7 +276,6 @@ Add Candidate
               onView={handleViewCandidate}
               onEdit={handleEditCandidate}
               onContact={handleContactCandidate}
-              onDelete={handleDeleteCandidate}
               appliedJobs={getAppliedJobsForCandidate(candidate.Id)}
             />
           ))}
@@ -308,7 +287,6 @@ Add Candidate
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={modalMode === 'edit' ? handleAddCandidate : undefined}
-        onDelete={handleDeleteCandidate}
         candidate={selectedCandidate}
         mode={modalMode}
         candidateApplications={selectedCandidate ? getCandidateApplications(selectedCandidate.Id) : []}
