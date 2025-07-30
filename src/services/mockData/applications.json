@@ -1,0 +1,49 @@
+[
+  {
+    "Id": 1,
+    "jobId": 1,
+    "candidateId": 1,
+    "appliedAt": "2024-01-16T14:30:00Z",
+    "status": "screening",
+    "notes": ""
+  },
+  {
+"Id": 2,
+    "jobId": 2,
+    "candidateId": 2,
+    "appliedAt": "2024-01-15T16:45:00Z",
+    "status": "interview_scheduled",
+    "notes": "",
+    "interview": {
+      "date": "2024-01-22",
+      "time": "14:00",
+      "interviewer": "Sarah Johnson",
+      "type": "Video",
+      "notes": "Technical screening - focus on React and Node.js experience"
+    }
+  },
+  {
+    "Id": 3,
+    "jobId": 3,
+    "candidateId": 3,
+    "appliedAt": "2024-01-14T11:20:00Z",
+    "status": "final_review",
+    "notes": ""
+  },
+  {
+    "Id": 4,
+    "jobId": 1,
+    "candidateId": 5,
+    "appliedAt": "2024-01-13T09:15:00Z",
+    "status": "hired",
+    "notes": ""
+  },
+  {
+    "Id": 5,
+    "jobId": 5,
+    "candidateId": 8,
+    "appliedAt": "2024-01-12T15:30:00Z",
+    "status": "rejected",
+    "notes": ""
+  }
+]

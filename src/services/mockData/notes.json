@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "entityType": "candidate",
+    "entityId": 1,
+    "category": "Phone Call",
+    "content": "Initial screening call. Candidate showed strong technical skills and enthusiasm for the role. Discussed salary expectations ($120-140k). Available for next round interview.",
+    "createdAt": "2024-01-16T15:30:00Z",
+    "updatedAt": "2024-01-16T15:30:00Z",
+    "createdBy": "Sarah Wilson"
+  },
+  {
+    "Id": 2,
+    "entityType": "candidate",
+    "entityId": 1,
+    "category": "Email",
+    "content": "Sent technical assessment link. Candidate confirmed receipt and mentioned they'll complete it by end of week.",
+    "createdAt": "2024-01-17T09:15:00Z",
+    "updatedAt": "2024-01-17T09:15:00Z",
+    "createdBy": "Sarah Wilson"
+  },
+  {
+    "Id": 3,
+    "entityType": "application",
+    "entityId": 2,
+    "category": "Meeting",
+    "content": "In-person interview scheduled. Candidate impressed the team with problem-solving approach. Technical skills validated. Moving to final round with hiring manager.",
+    "createdAt": "2024-01-18T14:00:00Z",
+    "updatedAt": "2024-01-18T14:00:00Z",
+    "createdBy": "Mike Johnson"
+  },
+  {
+    "Id": 4,
+    "entityType": "candidate",
+    "entityId": 2,
+    "category": "Follow-up",
+    "content": "Following up on product manager position. Candidate still interested and available for next steps. Scheduling final interview with VP of Product.",
+    "createdAt": "2024-01-19T11:30:00Z",
+    "updatedAt": "2024-01-19T11:30:00Z",
+    "createdBy": "Lisa Chen"
+  },
+  {
+    "Id": 5,
+    "entityType": "candidate",
+    "entityId": 3,
+    "category": "Phone Call",
+    "content": "Reference check completed. Former manager provided excellent feedback on design skills and collaboration. Ready to extend offer.",
+    "createdAt": "2024-01-20T16:45:00Z",
+    "updatedAt": "2024-01-20T16:45:00Z",
+    "createdBy": "Anna Rodriguez"
+  },
+  {
+    "Id": 6,
+    "entityType": "application",
+    "entityId": 1,
+    "category": "Email",
+    "content": "Sent rejection email with detailed feedback. Encouraged candidate to apply for future openings. Added to talent pool for similar roles.",
+    "createdAt": "2024-01-21T10:20:00Z",
+    "updatedAt": "2024-01-21T10:20:00Z",
+    "createdBy": "HR Team"
+  }
+]

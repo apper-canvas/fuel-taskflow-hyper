@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "companyName": "TechFlow Inc.",
+    "contactPerson": "Sarah Johnson",
+    "email": "sarah.johnson@techflow.com",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Innovation Drive, San Francisco, CA 94107",
+    "relationshipStatus": "active",
+    "createdAt": "2024-01-01T10:00:00Z"
+  },
+  {
+    "Id": 2,
+    "companyName": "InnovateCorp",
+    "contactPerson": "Michael Chen",
+    "email": "m.chen@innovatecorp.com",
+    "phone": "+1 (555) 234-5678",
+    "address": "456 Business Blvd, Austin, TX 73301",
+    "relationshipStatus": "active",
+    "createdAt": "2024-01-05T14:30:00Z"
+  },
+  {
+    "Id": 3,
+    "companyName": "DesignStudio Pro",
+    "contactPerson": "Emily Rodriguez",
+    "email": "emily@designstudiopro.com",
+    "phone": "+1 (555) 345-6789",
+    "address": "789 Creative Ave, New York, NY 10001",
+    "relationshipStatus": "active",
+    "createdAt": "2024-01-10T09:15:00Z"
+  },
+  {
+    "Id": 4,
+    "companyName": "CloudTech Solutions",
+    "contactPerson": "David Kim",
+    "email": "david.kim@cloudtech.com",
+    "phone": "+1 (555) 456-7890",
+    "address": "321 Cloud Street, Seattle, WA 98101",
+    "relationshipStatus": "prospect",
+    "createdAt": "2024-01-12T16:45:00Z"
+  },
+  {
+    "Id": 5,
+    "companyName": "Analytics Plus",
+    "contactPerson": "Lisa Thompson",
+    "email": "lisa.thompson@analyticsplus.com",
+    "phone": "+1 (555) 567-8901",
+    "address": "654 Data Lane, Chicago, IL 60601",
+    "relationshipStatus": "active",
+    "createdAt": "2024-01-15T11:20:00Z"
+  }
+]

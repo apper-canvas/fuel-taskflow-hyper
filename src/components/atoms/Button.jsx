@@ -1,48 +1,45 @@
-import React from "react"
-import { cn } from "@/utils/cn"
-import { motion } from "framer-motion"
+import React from "react";
+import { cn } from "@/utils/cn";
 
 const Button = React.forwardRef(({ 
   className, 
-  variant = "primary", 
-  size = "md", 
+  variant = "default", 
+  size = "default", 
   children, 
-  disabled,
   ...props 
 }, ref) => {
   const variants = {
-    primary: "bg-primary text-white hover:bg-primary/90",
-    secondary: "bg-secondary text-white hover:bg-secondary/90",
-    accent: "bg-accent text-white hover:bg-accent/90",
-    outline: "border-2 border-primary text-primary hover:bg-primary hover:text-white",
-    ghost: "text-gray-600 hover:bg-gray-100",
-  }
-  
+    default: "bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 shadow-lg",
+    secondary: "bg-gradient-to-r from-secondary-500 to-secondary-600 text-white hover:from-secondary-600 hover:to-secondary-700 shadow-lg",
+    accent: "bg-gradient-to-r from-accent-500 to-accent-600 text-white hover:from-accent-600 hover:to-accent-700 shadow-lg",
+    outline: "border-2 border-primary-500 text-primary-600 hover:bg-primary-50 bg-white",
+    ghost: "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+    danger: "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 shadow-lg"
+  };
+
   const sizes = {
     sm: "px-3 py-1.5 text-sm",
-    md: "px-4 py-2",
-    lg: "px-6 py-3 text-lg",
-  }
-  
+    default: "px-4 py-2 text-sm",
+    lg: "px-6 py-3 text-base",
+    xl: "px-8 py-4 text-lg"
+  };
+
   return (
-    <motion.button
-      ref={ref}
-      whileHover={{ scale: disabled ? 1 : 1.02 }}
-      whileTap={{ scale: disabled ? 1 : 0.98 }}
+    <button
       className={cn(
-        "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none",
         variants[variant],
         sizes[size],
         className
       )}
-      disabled={disabled}
+      ref={ref}
       {...props}
     >
       {children}
-    </motion.button>
-  )
-})
+    </button>
+  );
+});
 
-Button.displayName = "Button"
+Button.displayName = "Button";
 
-export default Button
+export default Button;

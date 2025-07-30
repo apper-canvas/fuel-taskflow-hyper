@@ -1,36 +1,38 @@
-import { motion } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
+import React from "react";
+import Button from "@/components/atoms/Button";
+import ApperIcon from "@/components/ApperIcon";
+import { cn } from "@/utils/cn";
 
-const Error = ({ message = "Something went wrong", onRetry }) => {
+const Error = ({ 
+  message = "Something went wrong. Please try again.", 
+  onRetry,
+  className 
+}) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="flex flex-col items-center justify-center py-16 px-4"
-    >
-      <div className="bg-error/10 rounded-full p-4 mb-6">
-        <ApperIcon name="AlertTriangle" size={48} className="text-error" />
+    <div className={cn("flex flex-col items-center justify-center py-12 px-6 text-center", className)}>
+      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center mb-6 shadow-lg">
+        <ApperIcon name="AlertTriangle" size={32} className="text-red-600" />
       </div>
       
-      <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+      <h3 className="text-xl font-semibold font-display text-gray-900 mb-2">
         Oops! Something went wrong
       </h3>
       
-      <p className="text-gray-600 text-center mb-8 max-w-md">
+      <p className="text-gray-600 mb-6 max-w-md">
         {message}
       </p>
       
       {onRetry && (
-        <button
+        <Button 
           onClick={onRetry}
-          className="btn-primary flex items-center space-x-2"
+          className="flex items-center space-x-2"
         >
           <ApperIcon name="RefreshCw" size={16} />
           <span>Try Again</span>
-        </button>
+        </Button>
       )}
-    </motion.div>
-  )
-}
+    </div>
+  );
+};
 
-export default Error
+export default Error;

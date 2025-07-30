@@ -1,43 +1,41 @@
-import { motion } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
+import React from "react";
+import Button from "@/components/atoms/Button";
+import ApperIcon from "@/components/ApperIcon";
+import { cn } from "@/utils/cn";
 
 const Empty = ({ 
-  title = "No tasks yet", 
-  description = "Create your first task to get started with TaskFlow",
-  actionText = "Add Task",
-  onAction 
+  title = "No data found",
+  description = "Get started by adding your first item.",
+  icon = "Inbox",
+  actionLabel,
+  onAction,
+  className 
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-16 px-4"
-    >
-      <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full p-6 mb-6">
-        <ApperIcon name="CheckSquare" size={64} className="text-primary" />
+    <div className={cn("flex flex-col items-center justify-center py-12 px-6 text-center", className)}>
+      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-6 shadow-lg">
+        <ApperIcon name={icon} size={32} className="text-gray-400" />
       </div>
       
-      <h3 className="text-2xl font-display font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-3">
+      <h3 className="text-xl font-semibold font-display text-gray-900 mb-2">
         {title}
       </h3>
       
-      <p className="text-gray-600 text-center mb-8 max-w-md text-lg">
+      <p className="text-gray-600 mb-6 max-w-md">
         {description}
       </p>
       
-      {onAction && (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+      {actionLabel && onAction && (
+        <Button 
           onClick={onAction}
-          className="btn-primary flex items-center space-x-2 text-lg px-6 py-3"
+          className="flex items-center space-x-2"
         >
-          <ApperIcon name="Plus" size={20} />
-          <span>{actionText}</span>
-        </motion.button>
+          <ApperIcon name="Plus" size={16} />
+          <span>{actionLabel}</span>
+        </Button>
       )}
-    </motion.div>
-  )
-}
+    </div>
+  );
+};
 
-export default Empty
+export default Empty;
