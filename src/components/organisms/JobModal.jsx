@@ -316,12 +316,12 @@ const validateForm = () => {
                   />
 </FormField>
 
-                {/* Job Notes Section - Only show for existing jobs */}
+{/* Job Notes Section - Only show for existing jobs */}
                 {job && (
                   <div className="border-t border-gray-200 pt-6">
                     <NotesList
                       entityType="job"
-                      entityId={job.Id}
+                      entityId={parseInt(job.Id) || 0}
                       entityName={job.title}
                     />
                   </div>

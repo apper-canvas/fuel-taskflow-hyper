@@ -404,15 +404,14 @@ return (
                   </FormField>
                 </div>
 
-                {/* Communication Notes */}
+{/* Communication Notes */}
                 <div className="border-t border-gray-200 pt-6">
                   <NotesList
                     entityType="candidate"
-                    entityId={candidate.Id}
+                    entityId={parseInt(candidate.Id) || 0}
                     entityName={candidate.name}
                   />
                 </div>
-
                 {/* Application Status Management */}
                 {(mode === "view" || mode === "edit") && candidate && <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Application Status</h3>
