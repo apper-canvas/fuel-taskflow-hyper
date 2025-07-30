@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 export const candidateService = {
   async getAll() {
@@ -38,7 +40,7 @@ export const candidateService = {
         return [];
       }
 
-      return response.data.map(candidate => ({
+return response.data.map(candidate => ({
         Id: candidate.Id,
         name: candidate.Name || '',
         email: candidate.email_c || '',
@@ -49,7 +51,7 @@ export const candidateService = {
         status: candidate.status_c || 'new',
         appliedAt: candidate.appliedAt_c || new Date().toISOString(),
         experienceLevel: candidate.experienceLevel_c || 'entry',
-        skills: candidate.skills_c ? candidate.skills_c.split(',') : [],
+        skills: candidate.skills_c ? candidate.skills_c.split(',').map(skill => skill.trim()) : [],
         resumeSummary: candidate.resumeSummary_c || '',
         availability: candidate.availability_c || 'available'
       }));
@@ -101,7 +103,7 @@ export const candidateService = {
       }
 
       const candidate = response.data;
-      return {
+return {
         Id: candidate.Id,
         name: candidate.Name || '',
         email: candidate.email_c || '',
@@ -112,7 +114,7 @@ export const candidateService = {
         status: candidate.status_c || 'new',
         appliedAt: candidate.appliedAt_c || new Date().toISOString(),
         experienceLevel: candidate.experienceLevel_c || 'entry',
-        skills: candidate.skills_c ? candidate.skills_c.split(',') : [],
+        skills: candidate.skills_c ? candidate.skills_c.split(',').map(skill => skill.trim()) : [],
         resumeSummary: candidate.resumeSummary_c || '',
         availability: candidate.availability_c || 'available'
       };
@@ -134,6 +136,30 @@ export const candidateService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
+// Validate and format skills for MultiPicklist
+      const validSkills = [
+        'React', 'Node.js', 'TypeScript', 'AWS', 'Product Strategy', 'Agile', 
+        'Data Analysis', 'Stakeholder Management', 'Figma', 'User Research', 
+        'Prototyping', 'Design Systems', 'Docker', 'Kubernetes', 'Terraform', 
+        'Python', 'Machine Learning', 'SQL', 'Tableau', 'Content Marketing', 
+        'SEO', 'Google Analytics', 'Social Media', 'Vue.js', 'CSS', 'JavaScript', 
+        'Responsive Design', 'Java', 'Spring Boot', 'PostgreSQL', 'Microservices'
+      ];
+      
+      let formattedSkills = '';
+      if (Array.isArray(candidateData.skills)) {
+        const filteredSkills = candidateData.skills.filter(skill => 
+          validSkills.includes(skill.trim())
+        );
+        formattedSkills = filteredSkills.join(',');
+      } else if (typeof candidateData.skills === 'string') {
+        const skillsArray = candidateData.skills.split(',').map(s => s.trim());
+        const filteredSkills = skillsArray.filter(skill => 
+          validSkills.includes(skill)
+        );
+        formattedSkills = filteredSkills.join(',');
+      }
+
       const params = {
         records: [{
           Name: candidateData.name || '',
@@ -145,7 +171,7 @@ export const candidateService = {
           status_c: candidateData.status || 'new',
           appliedAt_c: new Date().toISOString(),
           experienceLevel_c: candidateData.experienceLevel || 'entry',
-          skills_c: Array.isArray(candidateData.skills) ? candidateData.skills.join(',') : candidateData.skills || '',
+          skills_c: formattedSkills,
           resumeSummary_c: candidateData.resumeSummary || '',
           availability_c: candidateData.availability || 'available'
         }]
@@ -211,6 +237,30 @@ export const candidateService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
+// Validate and format skills for MultiPicklist
+      const validSkills = [
+        'React', 'Node.js', 'TypeScript', 'AWS', 'Product Strategy', 'Agile', 
+        'Data Analysis', 'Stakeholder Management', 'Figma', 'User Research', 
+        'Prototyping', 'Design Systems', 'Docker', 'Kubernetes', 'Terraform', 
+        'Python', 'Machine Learning', 'SQL', 'Tableau', 'Content Marketing', 
+        'SEO', 'Google Analytics', 'Social Media', 'Vue.js', 'CSS', 'JavaScript', 
+        'Responsive Design', 'Java', 'Spring Boot', 'PostgreSQL', 'Microservices'
+      ];
+      
+      let formattedSkills = '';
+      if (Array.isArray(updateData.skills)) {
+        const filteredSkills = updateData.skills.filter(skill => 
+          validSkills.includes(skill.trim())
+        );
+        formattedSkills = filteredSkills.join(',');
+      } else if (typeof updateData.skills === 'string') {
+        const skillsArray = updateData.skills.split(',').map(s => s.trim());
+        const filteredSkills = skillsArray.filter(skill => 
+          validSkills.includes(skill)
+        );
+        formattedSkills = filteredSkills.join(',');
+      }
+
       const params = {
         records: [{
           Id: parseInt(id),
@@ -222,7 +272,7 @@ export const candidateService = {
           position_c: updateData.position || '',
           status_c: updateData.status || 'new',
           experienceLevel_c: updateData.experienceLevel || 'entry',
-          skills_c: Array.isArray(updateData.skills) ? updateData.skills.join(',') : updateData.skills || '',
+          skills_c: formattedSkills,
           resumeSummary_c: updateData.resumeSummary || '',
           availability_c: updateData.availability || 'available'
         }]

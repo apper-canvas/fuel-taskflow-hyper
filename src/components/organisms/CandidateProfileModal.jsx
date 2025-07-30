@@ -36,14 +36,24 @@ const [formData, setFormData] = useState({
   
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [newSkill, setNewSkill] = useState("");
+const [selectedSkill, setSelectedSkill] = useState("");
   const [showInterviewModal, setShowInterviewModal] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
+  
+  // Available skills from database schema
+  const availableSkills = [
+    'React', 'Node.js', 'TypeScript', 'AWS', 'Product Strategy', 'Agile', 
+    'Data Analysis', 'Stakeholder Management', 'Figma', 'User Research', 
+    'Prototyping', 'Design Systems', 'Docker', 'Kubernetes', 'Terraform', 
+    'Python', 'Machine Learning', 'SQL', 'Tableau', 'Content Marketing', 
+    'SEO', 'Google Analytics', 'Social Media', 'Vue.js', 'CSS', 'JavaScript', 
+    'Responsive Design', 'Java', 'Spring Boot', 'PostgreSQL', 'Microservices'
+  ];
+  
   const experienceLevels = [
     { value: "entry", label: "Entry Level (0-2 years)" },
     { value: "mid", label: "Mid Level (3-5 years)" },
-    { value: "senior", label: "Senior Level (6-10 years)" },
-    { value: "lead", label: "Lead Level (10+ years)" }
+    { value: "senior", label: "Senior Level (6-10 years)" }
   ];
 
   const availabilityOptions = [
@@ -187,13 +197,13 @@ const handleSubmit = async (e) => {
     }
   };
 
-  const handleAddSkill = () => {
-    if (newSkill.trim() && !formData.skills.includes(newSkill.trim())) {
+const handleAddSkill = () => {
+    if (selectedSkill && !formData.skills.includes(selectedSkill)) {
       setFormData(prev => ({
         ...prev,
-        skills: [...prev.skills, newSkill.trim()]
+        skills: [...prev.skills, selectedSkill]
       }));
-      setNewSkill("");
+      setSelectedSkill("");
       
       // Clear skills error if it exists
       if (errors.skills) {
@@ -208,16 +218,14 @@ const handleSubmit = async (e) => {
   const handleRemoveSkill = (skillToRemove) => {
     setFormData(prev => ({
       ...prev,
-skills: prev.skills.filter(skill => skill !== skillToRemove)
+      skills: prev.skills.filter(skill => skill !== skillToRemove)
     }));
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddSkill();
-    }
-  };
+  // Get skills that are not already selected
+  const availableSkillOptions = availableSkills.filter(skill => 
+    !formData.skills.includes(skill)
+  );
 
   const getAvailabilityDisplay = (availability) => {
     const option = availabilityOptions.find(opt => opt.value === availability);
@@ -361,18 +369,35 @@ return (
                 {/* Skills */}
                 <div>
                   <h3 className="text-lg font-semibold font-display text-gray-900 mb-4">Skills & Expertise</h3>
-                  <FormField label="Skills" required error={errors.skills}>
-                    {(mode === "add" || mode === "edit") && <div className="flex gap-2 mb-3">
-                      <Input
-                        value={newSkill}
-                        onChange={e => setNewSkill(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Add a skill and press Enter"
-                        className="flex-1" />
-                      <Button type="button" onClick={handleAddSkill} variant="outline" size="default">
-                        <ApperIcon name="Plus" size={16} />
-                      </Button>
-                    </div>}
+<FormField label="Skills" required error={errors.skills}>
+                    {(mode === "add" || mode === "edit") && (
+                      <div className="flex gap-2 mb-3">
+                        <select
+                          value={selectedSkill}
+                          onChange={e => setSelectedSkill(e.target.value)}
+                          className="flex-1 h-10 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                          disabled={availableSkillOptions.length === 0}
+                        >
+                          <option value="">
+                            {availableSkillOptions.length === 0 ? "All skills selected" : "Select a skill..."}
+                          </option>
+                          {availableSkillOptions.map(skill => (
+                            <option key={skill} value={skill}>
+                              {skill}
+                            </option>
+                          ))}
+                        </select>
+                        <Button 
+                          type="button" 
+                          onClick={handleAddSkill} 
+                          variant="outline" 
+                          size="default"
+                          disabled={!selectedSkill || availableSkillOptions.length === 0}
+                        >
+                          <ApperIcon name="Plus" size={16} />
+                        </Button>
+                      </div>
+                    )}
                     <div className="flex flex-wrap gap-2">
                       {formData.skills.map(
                         (skill, index) => <Badge key={index} variant="secondary" className="flex items-center gap-1">
