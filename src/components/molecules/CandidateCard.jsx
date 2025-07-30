@@ -5,7 +5,7 @@ import Badge from "@/components/atoms/Badge";
 import { Card, CardContent } from "@/components/atoms/Card";
 import { cn } from "@/utils/cn";
 
-const CandidateCard = ({ candidate, className, onView, appliedJobs = [], ...props }) => {
+const CandidateCard = ({ candidate, className, onView, onDelete, appliedJobs = [], ...props }) => {
   const getStatusVariant = (status) => {
     switch (status.toLowerCase()) {
       case "new":
@@ -91,12 +91,19 @@ const CandidateCard = ({ candidate, className, onView, appliedJobs = [], ...prop
             >
               <ApperIcon name="Edit" size={14} />
             </button>
-            <button
+<button
               onClick={() => props.onContact?.(candidate)}
               className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
               title="Contact Candidate"
             >
               <ApperIcon name="Phone" size={14} />
+            </button>
+            <button
+              onClick={() => onDelete?.(candidate)}
+              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+              title="Delete Candidate"
+            >
+              <ApperIcon name="Trash2" size={14} />
             </button>
           </div>
         </div>

@@ -84,15 +84,35 @@ function handleViewCandidate(candidate) {
       setCandidates(prev => [newCandidate, ...prev])
       toast.success('Candidate added successfully!')
     } catch (error) {
-      toast.error(error.message || 'Failed to add candidate')
+toast.error(error.message || 'Failed to add candidate')
       throw error
-}
+    }
+  }
+
+  async function handleDeleteCandidate(candidate) {
+    if (!confirm(`Are you sure you want to delete ${candidate.name}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const success = await candidateService.delete(candidate.Id);
+      
+      if (success) {
+        // Remove deleted candidate from local state
+        setCandidates(prev => prev.filter(c => c.Id !== candidate.Id));
+        toast.success(`${candidate.name} has been deleted successfully`);
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to delete candidate');
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleStatusChange(applicationId, newStatus) {
     try {
       await applicationService.updateStatus(applicationId, newStatus);
-      
       // Reload applications to get updated data
       const updatedApplications = await applicationService.getAll();
       setApplications(updatedApplications);
@@ -270,12 +290,13 @@ Add Candidate
       ) : (
 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredCandidates.map(candidate => (
-            <CandidateCard
+<CandidateCard
               key={candidate.Id}
               candidate={candidate}
               onView={handleViewCandidate}
               onEdit={handleEditCandidate}
               onContact={handleContactCandidate}
+              onDelete={handleDeleteCandidate}
               appliedJobs={getAppliedJobsForCandidate(candidate.Id)}
             />
           ))}
