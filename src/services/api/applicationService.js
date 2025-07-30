@@ -152,12 +152,16 @@ export const applicationService = {
         notes: application.notes_c || '',
         interview: application.interview_c || null
       }));
-    } catch (error) {
+} catch (error) {
       if (error?.response?.data?.message) {
         console.error(`Error fetching applications for job ${jobId}:`, error?.response?.data?.message);
+        toast.error(`Failed to load applications: ${error.response.data.message}`);
       } else {
         console.error(`Error fetching applications for job ${jobId}:`, error.message);
+        toast.error('Failed to load applications. Please check your connection.');
       }
+      // Return empty array to prevent component crashes
+      return [];
       return [];
     }
   },
